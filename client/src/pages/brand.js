@@ -27,7 +27,6 @@ class Brand extends Component {
 			const { data } = response
 			const title = data[0].categories.join(' & ')
 			this.setState({ products: data, loading: false, title })
-			console.log(data)
 		} catch (error) {
 			this.setState({ error: error, loading: false })
 		}

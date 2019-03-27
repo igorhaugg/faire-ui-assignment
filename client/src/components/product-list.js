@@ -1,65 +1,39 @@
-import React, { Component, Fragment } from 'react'
+import React from 'react'
 import { css } from 'emotion'
 import { Link } from 'react-router-dom'
 
-import Pagination from './pagination'
-
-class ProductList extends Component {
-	state = {
-		page : 1
-	}
-	handleClick = page => {
-		this.setState({ page })
-		setTimeout(() => {
-			window.scrollTo(0, 0)
-		}, 2)
-	}
-	render() {
-		const { products, brand = false } = this.props
-		const { page } = this.state
-		const pageBegin = page === 1 ? 0 : (page - 1) * 9
-		const pageEnd = page * 9
-		return (
-			<Fragment>
-				<section className={product}>
-					{products.slice(pageBegin, pageEnd).map(product => (
-						<Link
-							to={`/brand/${product.token}`}
-							key={product.token}
-							className={product__item}>
-							<img
-								src={
-									product.squared_image ? (
-										product.squared_image.url
-									) : (
-										product.images[0].url
-									)
-								}
-								alt={product.name}
-								className={product__image}
-							/>
-							<h4 className={product__title}>{product.name}</h4>
-							{brand ? (
-								<span className={product__subtitle}>
-									${product.retail_price_cents / 100}
-								</span>
-							) : (
-								<span className={product__subtitle}>
-									${product.minimum_order_amount_cents / 100} Minimum
-								</span>
-							)}
-						</Link>
-					))}
-				</section>
-				<Pagination
-					page={page}
-					products={products}
-					handlePagination={this.handleClick}
+const ProductList = ({ products, brand = false }) => (
+	<section className={product}>
+		{products.map(product => (
+			<Link
+				to={`/brand/${product.token}`}
+				key={product.token}
+				className={product__item}>
+				<img
+					src={
+						product.squared_image ? (
+							product.squared_image.url
+						) : (
+							product.images[0].url
+						)
+					}
+					alt={product.name}
+					className={product__image}
 				/>
-			</Fragment>
-		)
-	}
-}
+				<h4 className={product__title}>{product.name}</h4>
+				{brand ? (
+					<span className={product__subtitle}>
+						${product.retail_price_cents / 100}
+					</span>
+				) : (
+					<span className={product__subtitle}>
+						${product.minimum_order_amount_cents / 100} Minimum
+					</span>
+				)}
+			</Link>
+		))}
+	</section>
+)
 
 const product = css`
 	display: flex;
